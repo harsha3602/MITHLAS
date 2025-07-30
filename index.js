@@ -32,23 +32,23 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsmate);
 app.use(express.static(path.join(__dirname, "/public")));
 
-// const dbUrl= process.env.ATLASDB_URL;
+const dbUrl= process.env.ATLASDB_URL;
 
-// const store= MongoStore.create({
-//     mongoUrl: dbUrl,
-//      crypto: {
-//      secret: process.env.SECRET,
-//   },
-//   touchAfter:24*3600,
+const store= MongoStore.create({
+    mongoUrl: dbUrl,
+     crypto: {
+     secret: process.env.SECRET,
+  },
+  touchAfter:24*3600,
 
-//   });
+  });
 
-//   store.on("error",()=>{
-//     console.log("error",err);
-//   })
+  store.on("error",()=>{
+    console.log("error",err);
+  })
 
   const sessionOption={
-    // store,
+    store,
      secret:process.env.SECRET,
     resave: false,
     saveUninitialized: true,
@@ -73,8 +73,8 @@ main()
   .catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/StudentData");
-  // await mongoose.connect(dbUrl);
+  // await mongoose.connect("mongodb://127.0.0.1:27017/StudentData");
+  await mongoose.connect(dbUrl);
   // console.log(dbUrl);
 }
 
@@ -358,7 +358,7 @@ app.post(
 app.post(
   "/feed/login",
   saveRedirectUrl,
-  passport.authenticate("local", {
+  passport.authenticate("User-local", {
     failureRedirect: "/main",
     failureFlash: true,
   }),
@@ -388,6 +388,6 @@ app.use((err, req, res, next) => {
   res.status(statuscode).render("error.ejs", { message });
 });
 
-app.listen(8080, (req, res) => {
-  console.log("all clear", 8080);
+app.listen(8000, (req, res) => {
+  console.log("all clear", 8000);
 });
