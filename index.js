@@ -380,12 +380,12 @@ app.get("/logout", (req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  next(new ExpressError(400, "Page not found"));
+  next(new ExpressError(500));
 });
 
 app.use((err, req, res, next) => {
   let { statuscode = 400, message = "something went wrong" } = err;
-  res.status(statuscode).render("error.ejs", { message });
+  res.status(statuscode).render("error.ejs", { message, statuscode });
 });
 
 app.listen(8000, (req, res) => {
